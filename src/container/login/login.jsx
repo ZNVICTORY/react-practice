@@ -11,7 +11,7 @@ import {
 class Login extends Component {
     constructor(porps) {
         super(porps)
-        this.handleRegister = this.handleRegister.bind(this)
+        this.toRegister = this.toRegister.bind(this)
     }
     render () {
         return(
@@ -26,13 +26,13 @@ class Login extends Component {
                     <WhiteSpace />
                     <Button type="primary">登录</Button>
                     <WhiteSpace />
-                    <Button type="primary" onClick={this.handleRegister}>注册</Button>
+                    <Button type="primary" onClick={this.toRegister}>注册</Button>
                 </WingBlank>
             </Fragment>
         )
     }
 
-    handleRegister() {
+    toRegister() {
         console.log(this.props)
         this.props.history.push('/register')
     }

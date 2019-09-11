@@ -7,5 +7,13 @@ router.get('/info', function(req, res) {
     success: true
   })
 })
+router.post('/register', function(req, res) {
+  const { user, pwd, registerType } = req.body
+  console.log(user, pwd, registerType)
+  res.json({
+    code: 0,
+    success: true
+  })
+})
 
 module.exports = router

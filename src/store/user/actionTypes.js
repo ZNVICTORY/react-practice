@@ -1,0 +1,6 @@
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+export const ERROR_MSG = 'ERROR_MSG'
+export const CHANGE_INPUT_USER = 'CHANGE_INPUT_USER' 
+export const CHANGE_INPUT_PWD = 'change_input_pwd'
+export const CHANGE_INPUT_REPWD = 'change_input_repeatPwd'
+export const CHANGE_REG_TYPE = 'change_register_type'

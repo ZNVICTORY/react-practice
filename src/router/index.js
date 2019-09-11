@@ -13,7 +13,7 @@ class Routes extends React.Component {
         return (
             <Fragment>
                 {/* <Route path="/" component={}  exact  /> */}
-                <AuthRoute></AuthRoute>
+                <AuthRoute />
                 <Route path="/boss" component={Boss} />
                 <Route path="/login"  component={Login} />
                 <Route path="/register" component={Register} /> 
