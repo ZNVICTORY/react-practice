@@ -2,7 +2,7 @@ import React, {  Fragment,Component } from 'react'
 import Logo from '../../component/logo/logo'
 import { connect } from 'react-redux' 
 import { Redirect } from 'react-router-dom'
-import { getRegister } from '../../store/user/actionCreator'
+import { getRegister } from '../../store/user/user'
 import imoocForm from '../../component/imooc-form/imoocform'
 import './register.css'
 import { 

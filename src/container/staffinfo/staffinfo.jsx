@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { NavBar, InputItem, TextareaItem, Button } from 'antd-mobile'
 import AvatarSelector from '../../component/avatar-selector/avatar-selector'
 import { connect } from 'react-redux'
-import { update } from '../../store/user/actionCreator'
+import { update } from '../../store/user/user'
 import { Redirect } from 'react-router-dom'
 
 @connect(

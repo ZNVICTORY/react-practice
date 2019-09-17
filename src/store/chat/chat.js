@@ -22,7 +22,10 @@ export function chat(state=defaultState, action) {
     case MSG_RECV:
       const n = action.payload.data.to === action.payload.userid ? 1 : 0; 
       return {...state, chatmsg:[ ...state.chatmsg, action.payload.data], unread: state.unread + n };
-    // case MSG_READ: ;
+    case MSG_READ: 
+      const { from , num } = action.payload
+      ;return {  ...state, 
+      chatmsg: state.chatmsg.map(v => ({...v, read: from === v.from? true: v.read})), unread: (state.unread - num)};
     default: return state
   }
 }
@@ -64,6 +67,24 @@ export function recvMsg() {
       console.log('recvmsg', getState())
       const userid = getState().user._id
       dispatch(msgRecv(data, userid))
+    })
+  }
+}
+
+function msgRead({userid, from ,num}) {
+  return {
+    type: MSG_READ,
+    payload:  { userid, from, num }
+  }
+}
+export function readMsg(from) {
+  return (dispatch, getState) => {
+    axios.post('/api/v1/user/readmsg', {from}).then(res => {
+      if(res.status === 200 && res.data.code === 0) {
+        const userid = getState().user._id
+        console.log('radasmag',res.data)
+        dispatch(msgRead({userid, from, num:res.data.num}))
+      }
     })
   }
 }

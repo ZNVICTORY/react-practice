@@ -1,10 +1,28 @@
 import axios from 'axios'
-import { 
-  ERROR_MSG,
-  LOAD_INFO,
-  AUTH_SUCCESS,
-  LOGOUT
-} from './actionTypes'
+import { getRedirectPath } from '../../util/util'
+
+const LOGOUT = 'LOGOUT'
+const ERROR_MSG = 'ERROR_MSG'
+const LOAD_INFO = 'LOAD_INFO'
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
+
+const defaultState = {
+  redirectPath:'',
+  registerType:'',
+  user: '',
+  msg: ''
+}
+
+export const user = (preState = defaultState, action) => {
+  console.log('action', action)
+  switch(action.type) {
+    case AUTH_SUCCESS : return {...preState, redirectPath: getRedirectPath(action.payload), msg:'', ...action.payload }
+    case LOAD_INFO : return { ...preState, ...action.payload.data }
+    case ERROR_MSG : return { ...preState, msg: action.msg  }
+    case LOGOUT : return { ...defaultState, redirectPath: "/login" }
+    default : return preState 
+  } 
+}
 
 export const loadData = (data) =>{
   return {
@@ -52,11 +70,13 @@ export const getLogin = ({user, pwd}) => {
     return errMsg('用户名密码不能为空')
   }
   return (dispatch) => {
-    axios.post('/api/v1/user/login', { user, pwd}).then(res=>{
+    axios.post('/api/v1/user/login', { user, pwd })
+    .then(res=>{
       if (res.status === 200 && res.data.code === 0) {
-        dispatch(authSuccess(res.data.data))
+        console.log('resdatax',authSuccess(res.data.data))
+          dispatch(authSuccess(res.data.data))
       } else {
-        dispatch(errMsg(res.data.msg))
+          dispatch(errMsg(res.data.msg))
       }
     }).catch(err => {
       dispatch(errMsg(err))

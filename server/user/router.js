@@ -42,14 +42,14 @@ router.post('/register', function(req, res) {
   const { user, pwd, registerType  } = req.body
   User.find({user}, function(err, docs) {
     if(docs.length !== 0) {
-        data = { code: 1, msg: '用户名重复', success: false }
+       const data = { code: 1, msg: '用户名重复', success: false }
         return res.json(data)
     }
     // create 方法无法拿到的用户的id
     const userModel = new User({user, pwd:md5(pwd), registerType})
     userModel.save((err,doc) => {
       if(err) {
-        data = { code: 1, msg: '服务端错误', success: false }
+        const data = { code: 1, msg: '服务端错误', success: false }
         return res.json(data)
       } 
       const { user, type, _id} = doc
@@ -76,7 +76,7 @@ router.post('/login', function(req, res) {
 router.post('/update', function(req, res) {
   const { userId } = req.cookies
   if(!userId) {
-    return json.dumps({code: 1, success: false})
+    return res.json({code: 1, success: false})
   }
   const body = req.body
   User.findByIdAndUpdate(userId, body, function(err, docs) {
@@ -101,8 +101,23 @@ router.get('/getmsglist', function(req, res) {
         return res.json({code: 0, msgs: docs, users: users})
       }
     })
-
   })
+})
+
+router.post('/readmsg', function(req, res) {
+  const { from } = req.body
+  const userid = req.cookies.userId
+  Chat.update(
+    {from, to: userid}, 
+    {'$set':{ read: true}},
+    {'multi': true},
+     function(err, docs) {
+    if(!err){
+      return res.json({code: 0, num: docs.nModified})
+    }
+    return res.json({code: 1, msg:'修改失败'})
+  })
+  
 })
 
 function md5(pwd) {

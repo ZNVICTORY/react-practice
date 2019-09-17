@@ -48,6 +48,10 @@ class Msg extends Component {
                 <Item
                   extra={<Badge text={unreadNum}></Badge>}
                   thumb={require(`../img/${userinfo[targetId].avatar}.png`)}
+                  arrow="horizontal"
+                  onClick={() => {
+                     this.props.history.push(`/chat/${targetId}`)
+                  }}
                 >
                   { lastItem.content }
                 <Brief>{userinfo[targetId].name}</Brief>

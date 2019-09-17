@@ -2,12 +2,12 @@ import React, {Component} from 'react'
 import './index.css'
 import { connect } from 'react-redux'
 import { List, InputItem, NavBar, Grid } from 'antd-mobile'
-import {  sendMsg,getMsgList , recvMsg} from '../../store/chat/chat'
+import {  sendMsg, getMsgList, recvMsg, readMsg} from '../../store/chat/chat'
 import { getChatId } from '../../util/util'
 
 @connect(
   state =>state,
-  {  recvMsg,sendMsg ,getMsgList}
+  {  recvMsg,sendMsg ,getMsgList, readMsg}
 )
 class Chat extends Component {
   constructor(props) {
@@ -24,6 +24,11 @@ class Chat extends Component {
       this.props.getMsgList()
       this.props.recvMsg()
     }
+  }
+
+  componentWillUnmount() {
+    const to = this.props.match.params.userid
+    this.props.readMsg(to)
   }
   fixCarousel(){
     setTimeout(function(){
@@ -66,7 +71,7 @@ class Chat extends Component {
             <List key={v._id}>
               <List.Item
                 thumb={avatar}
-              >对方发来的：{v.content}</List.Item>
+              >{v.content}</List.Item>
             </List>
           ):(
             <List key={v._id}>
@@ -86,13 +91,14 @@ class Chat extends Component {
               extra={
                 <span>
                   <span 
+                    role="img" aria-label=""
                     style={{marginRight: 15}}
                     onClick={() => {this.setState({
                       showEmoji: !this.state.showEmoji
                     })
                     this.fixCarousel()
                     }}
-                    >😀</span>
+                  >😀</span>
                   <span onClick={this.handleSubmit}>发送</span>
                 </span>
               }

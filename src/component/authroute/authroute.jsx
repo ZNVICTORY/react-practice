@@ -2,7 +2,7 @@ import { Component } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { loadData } from '../../store/user/actionCreator'
+import { loadData } from '../../store/user/user'
 
 
 @withRouter

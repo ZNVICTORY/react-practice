@@ -3,7 +3,7 @@ import Logo from '../../component/logo/logo'
 import './login.css'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getLogin } from '../../store/user/actionCreator'
+import { getLogin } from '../../store/user/user'
 import imoocForm from '../../component/imooc-form/imoocform' 
 import {
    List, 
@@ -17,12 +17,10 @@ import {
     {getLogin})
 @imoocForm
 class Login extends Component {
-    constructor(props) { 
-        super(props)
+    // constructor(props) { 
+    //     super(props)
         
-        this.handleLogin = this.handleLogin.bind(this)
-        this.toRegister = this.toRegister.bind(this)
-    }
+    // }
     render () {
         return(
             <Fragment>
@@ -36,9 +34,9 @@ class Login extends Component {
                         <InputItem onChange={value => this.props.handleChange('pwd', value)}  type="password">密码</InputItem>       
                     </List>
                     <WhiteSpace />
-                    <Button type="primary" onClick={this.handleLogin}>登录</Button>
+                    <Button type="primary" onClick={ () => this.handleLogin()}>登录</Button>
                     <WhiteSpace />
-                    <Button type="primary" onClick={this.toRegister}>注册</Button>
+                    <Button type="primary" onClick={ () => this.toRegister()}>注册</Button>
                 </WingBlank>
             </Fragment>
         )
@@ -46,7 +44,6 @@ class Login extends Component {
     
 
     handleLogin() {
-        
         this.props.getLogin(this.props.state)
     }
 
