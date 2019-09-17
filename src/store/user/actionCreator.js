@@ -1,40 +1,15 @@
 import axios from 'axios'
 import { 
-  CHANGE_INPUT_USER, 
-  CHANGE_INPUT_PWD, 
-  CHANGE_INPUT_REPWD,
-  CHANGE_REG_TYPE,
-  ERROR_MSG 
+  ERROR_MSG,
+  LOAD_INFO,
+  AUTH_SUCCESS,
+  LOGOUT
 } from './actionTypes'
-// export const register = ({}) => {
 
-// }
-export const getChangeUserAction = (value) => { 
-    return {
-      type: CHANGE_INPUT_USER,
-      user: value
-    }
-}
-
-export const getChangePwdAction = (value) => {
+export const loadData = (data) =>{
   return {
-    type: CHANGE_INPUT_PWD,
-    pwd: value
-  }
-}
-
-export const getChangeRepwdAction = (value) => {
-  return {
-    type: CHANGE_INPUT_REPWD,
-    repeatPwd: value
-  }
-}
-
-export const getChangeType = (value) => {
-  console.log(value)
-  return {
-    type: CHANGE_REG_TYPE,
-    registerType: value
+    type: LOAD_INFO,
+    payload: data
   }
 }
 
@@ -44,9 +19,14 @@ const errMsg = (value) => {
     msg: value
   }
 }
+const authSuccess = (data) =>{
+  return {
+    type: AUTH_SUCCESS,
+    payload: data
+  }
+}
 
 export const getRegister = ({ user, pwd, repeatPwd, registerType}) => {
-  console.log('ok',user, pwd, repeatPwd, registerType)
   if(!user || !pwd || !registerType ) {
     return errMsg('用户名密码必须输入')
   }
@@ -54,12 +34,50 @@ export const getRegister = ({ user, pwd, repeatPwd, registerType}) => {
     return errMsg('密码输入不一致')
   }
   return (dispatch) => {
-    axios.post('/user/register', {user, pwd, registerType }).then(res => {
-      console.log('12345',res.data)
-      dispatch(res.data)
+    axios.post('/api/v1/user/register', {user, pwd, registerType })
+    .then(res => {
+      if(res.status === 200 && res.data.code === 0) {
+        dispatch(authSuccess({user, pwd, registerType}))
+      } else {
+        dispatch(errMsg(res.data.msg))
+      }
     }).catch(err => {
-      return errMsg(err)
+      dispatch(errMsg(err))
     })
   }
 }
+
+export const getLogin = ({user, pwd}) => {
+  if (!user || !pwd) {
+    return errMsg('用户名密码不能为空')
+  }
+  return (dispatch) => {
+    axios.post('/api/v1/user/login', { user, pwd}).then(res=>{
+      if (res.status === 200 && res.data.code === 0) {
+        dispatch(authSuccess(res.data.data))
+      } else {
+        dispatch(errMsg(res.data.msg))
+      }
+    }).catch(err => {
+      dispatch(errMsg(err))
+    })
+  }
+}
+
+export const update = (data) => {
+  return (dispatch) => {
+    axios.post('api/v1/user/update', data).then(res => {
+      if(res.status === 200 && res.data.code === 0) {
+        dispatch(authSuccess(res.data.data))
+      } else {
+        dispatch(errMsg(res.data.msg))
+      }
+    })
+  }
+}
+
+export const logoutSubmit = () => {
+  return { type: LOGOUT }
+}
+
 

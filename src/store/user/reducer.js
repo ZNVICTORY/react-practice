@@ -1,29 +1,32 @@
+
 import { 
-  REGISTER_SUCCESS,
   ERROR_MSG,
-  CHANGE_INPUT_USER,
-  CHANGE_INPUT_PWD,
-  CHANGE_INPUT_REPWD,
-  CHANGE_REG_TYPE
+  LOAD_INFO,
+  AUTH_SUCCESS,
+  LOGOUT
   } from './actionTypes'
 
+import { getRedirectPath } from '../../util/util'
+// 初始状态
 const defaultState = {
-  registerType:'STAFF',
+  redirectPath:'',
+  registerType:'',
   user: '',
-  pwd: '',
-  repeatPwd:'',
-  isAuth: false,
   msg: ''
 }
 
-export default function user(preState = defaultState, action) {
+export const user = (preState = defaultState, action) => {
+  console.log('action', action)
   switch(action.type) {
-    case CHANGE_REG_TYPE : return { ...preState, registerType: action.registerType}
-    case CHANGE_INPUT_REPWD: return { ...preState, repeatPwd: action.pwd}
-    case CHANGE_INPUT_PWD : return { ...preState, pwd: action.pwd }
-    case CHANGE_INPUT_USER : return {...preState, user: action.user} 
-    case REGISTER_SUCCESS : return {...preState, msg: '', isAuth: true}
-    case ERROR_MSG: return {...preState, msg:action.msg , isAuth: false}
+    case AUTH_SUCCESS : return {...preState, redirectPath: getRedirectPath(action.payload), msg:'', ...action.payload }
+    case LOAD_INFO : return { ...preState, ...action.payload.data }
+    case ERROR_MSG : return { ...preState, msg: action.msg  }
+    case LOGOUT : return { ...defaultState, redirectPath: "/login" }
     default : return preState 
-  }
+  } 
 }
+
+
+
+
+

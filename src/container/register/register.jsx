@@ -1,13 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, {  Fragment,Component } from 'react'
 import Logo from '../../component/logo/logo'
-import store from '../../store/index'
-import { 
-  getChangeUserAction, 
-  getChangePwdAction, 
-  getChangeRepwdAction,
-  getChangeType,
-  getRegister 
-} from '../../store/user/actionCreator'
+import { connect } from 'react-redux' 
+import { Redirect } from 'react-router-dom'
+import { getRegister } from '../../store/user/actionCreator'
+import imoocForm from '../../component/imooc-form/imoocform'
+import './register.css'
 import { 
     List, 
     InputItem, 
@@ -17,89 +14,64 @@ import {
     Button 
 } from 'antd-mobile'
 
+@connect(state => state.user,
+  {getRegister})
+@imoocForm
 class Register extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            registerType:'STAFF',
-            user: '',
-            pwd: '',
-            repeatPwd:''
-
-        }
-        this.handleRegister = this.handleRegister.bind(this)
-        this.charegisterngeUser = this.changeUser.bind(this)
-        this.handleStore = this.handleStore.bind(this)
-        this.changPwd = this.changPwd.bind(this)
-        this.changeRePwd = this.changeRePwd.bind(this)
-        store.subscribe(this.handleStore)
-    }
-
-    render () {
-        const RadioItem = Radio.RadioItem
-        return(
-            <Fragment>
-                <Logo />
-                <WingBlank>
-                    <List>
-                        <WhiteSpace />
-                        <InputItem onChange={this.changeUser}>用户名</InputItem>
-                        <WhiteSpace />
-                        <InputItem onChange={this.changPwd}>密码</InputItem>
-                        <WhiteSpace />
-                        <InputItem onChange={this.changeRePwd}>确认密码</InputItem>
-                        <WhiteSpace />
-                        <RadioItem 
-                            checked={ this.state.registerType === 'STAFF'} 
-                            onChange={this.handleChangeType.bind(this, 'STAFF')}>员工</RadioItem>
-                        <WhiteSpace size="lg"/>
-                        <RadioItem 
-                            checked={ this.state.registerType === 'BOSS'}
-                            onChange={this.handleChangeType.bind(this, 'BOSS')}>老板</RadioItem>
-                        <WhiteSpace  />
-                        <Button type="primary" onClick={this.handleRegister}>注册</Button>
-                    </List>
-                </WingBlank>
-            </Fragment>
-        )
-    }
-
-    handleRegister() {
-      console.log('state',this.state)
-      const action = getRegister(this.state)
-      store.dispatch(action)
-    }
-
-    handleChangeType(value) {
-      const action = getChangeType(value)
-      store.dispatch(action)
-    }
-
-    changeRePwd(value) {
-      this.setState({
-        repeatPwd: value
-      })
-      // const action = getChangeRepwdAction(value)
-      // store.dispatch(action)
-    }
-
-    changPwd(value) {
-      const action = getChangePwdAction(value)
-      store.dispatch(action)
-    }
-
-    changeUser(value) {
-      const action = getChangeUserAction(value)
-      store.dispatch(action)
-    }
-
-    handleStore() {
-      this.setState((preState) => (
-        store.getState().user
-      ))
-    }
+constructor(props) {
+    super(props)
+    this.handleRegister = this.handleRegister.bind(this)
+}
+componentDidMount() {
+  this.props.handleChange('registerType', 'STAFF')
 }
 
+render () {
+    const RadioItem = Radio.RadioItem
+    return(
+        <Fragment>
+            <Logo />
+            {this.props.redirectPath?<Redirect to={this.props.redirectPath}></Redirect>:null}
+            <WingBlank>
+                <List>
+                  {this.props.msg?<p className="err-msg">{this.props.msg}</p>:null} 
+                    <WhiteSpace />
+                    <InputItem
+                      type="text" 
+                      onChange={(value) => this.props.handleChange('user', value)}
+                    >用户名</InputItem>
+                    <WhiteSpace />
+                    <InputItem  
+                      type="password" 
+                      onChange={(value) => this.props.handleChange('pwd', value)}
+                    >密码</InputItem>
+                    <WhiteSpace />
+                    <InputItem  
+                      type="password" 
+                      onChange={(value) => this.props.handleChange('repeatPwd', value)}
+                    >确认密码</InputItem>
+                    <WhiteSpace />
+                    <RadioItem 
+                        checked={ this.props.state.registerType === 'STAFF'} 
+                        onChange={() => this.props.handleChange('registerType','STAFF')}
+                    >员工</RadioItem>
+                    <WhiteSpace size="lg"/>
+                    <RadioItem 
+                        checked={ this.props.state.registerType === 'BOSS'}
+                        onChange={() => this.props.handleChange('registerType','BOSS')}
+                      >老板</RadioItem>
+                    <WhiteSpace  />
+                    <Button type="primary" onClick={this.handleRegister}>注册</Button>
+                </List>
+            </WingBlank>
+        </Fragment>
+    )
+}
+    handleRegister() {
+      this.props.getRegister(this.props.state)
+      console.log(this.props)
+    }
+}
 
 export default Register

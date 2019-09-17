@@ -15,6 +15,7 @@
     "babel-plugin-named-asset-import": "^0.3.3",
     "babel-preset-react-app": "^9.0.1",
     "body-parser": "^1.19.0",
+    "browser-cookies": "^1.2.0",
     "camelcase": "^5.2.0",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "cookie-parser": "^1.4.4",
@@ -40,6 +41,7 @@
     "jest-resolve": "24.8.0",
     "jest-watch-typeahead": "0.3.1",
     "mini-css-extract-plugin": "0.5.0",
+    "mongoose": "^5.7.0",
     "nodemon": "^1.19.2",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",
@@ -48,6 +50,7 @@
     "postcss-normalize": "7.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
+    "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-app-polyfill": "^1.0.2",
     "react-dev-utils": "^9.0.3",
@@ -60,10 +63,13 @@
     "resolve-url-loader": "3.1.0",
     "sass-loader": "7.2.0",
     "semver": "6.3.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "1.4.1",
     "ts-pnp": "1.1.2",
     "url-loader": "2.1.0",
+    "utility": "^1.16.1",
     "webpack": "4.39.1",
     "webpack-dev-server": "3.2.1",
     "webpack-manifest-plugin": "2.0.4",
@@ -114,8 +120,7 @@
     "@babel/plugin-proposal-decorators": "^7.6.0",
     "babel-plugin-import": "^1.12.1"
   },
-  "proxy": "http://localhost:9099",
-   
+  "proxy": "http://localhost:8088",
   "jest": {
     "roots": [
       "<rootDir>/src"
